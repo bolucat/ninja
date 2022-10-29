@@ -1,0 +1,31 @@
+on:
+  push:
+    paths:
+      - '.github/workflows/geph.yml'
+
+name: Geph Build
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+    runs-on: windows-latest
+    steps:
+      
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Start build
+        run: |
+          curl https://win.rustup.rs/ > rustup-init.exe
+          ./rustup-init -y --default-toolchain "stable-i686-pc-windows-msvc" --profile minimal
+          git clone https://github.com/geph-official/geph4-client geph
+          cd geph
+          PATH=$PATH:/c/Users/runneradmin/.cargo/bin CARGO_NET_GIT_FETCH_WITH_CLI=true cargo build --release
+          ls
+        shell: bash
+        
+      - name: Release
+        uses: actions/upload-artifact@v3
+        with:
+          name: geph-dev-build
+          path: geph/target/release/geph4-client.exe
