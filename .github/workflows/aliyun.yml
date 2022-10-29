@@ -3,7 +3,7 @@ on:
     paths:
       - '.github/workflows/aliyun.yml'
 
-name: build
+name: Aliyunpan Dev Build
 jobs:
   build:
     strategy:
