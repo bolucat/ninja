@@ -20,6 +20,7 @@ jobs:
           ./rustup-init -y --default-toolchain "stable-i686-pc-windows-msvc" --profile minimal
           git clone https://github.com/geph-official/geph4-client geph
           cd geph
+          git checkout cd27d90c161e3813bb40adbe57e38883ba2721fa
           PATH=$PATH:/c/Users/runneradmin/.cargo/bin CARGO_NET_GIT_FETCH_WITH_CLI=true cargo build --release
           ls
         shell: bash
