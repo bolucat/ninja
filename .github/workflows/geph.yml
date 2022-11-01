@@ -29,6 +29,7 @@ jobs:
           path: china-ips.txt
 
   build:
+    needs: make-china-list
     strategy:
       fail-fast: false
     runs-on: windows-latest
