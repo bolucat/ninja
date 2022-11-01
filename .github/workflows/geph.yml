@@ -53,13 +53,13 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: china-domains
-          path: src/china
+          path: geph/src/china
 
       - name: Get china-ips list
         uses: actions/download-artifact@v3
         with:
           name: china-ips
-          path: src/china
+          path: geph/src/china
 
       - name: Build Geph
         run: |
