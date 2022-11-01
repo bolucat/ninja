@@ -101,7 +101,8 @@ jobs:
       
       - name: Extract Source
         run: |
-          mkdir -p src && tar xf transmission*.tar.* -C src --strip-components 1
+          mkdir -p src
+          tar xf transmission*.tar.* -C src --strip-components 1
           rm -rfv transmission*.tar.*
           mv src/* .
           rm -rfv src
@@ -147,8 +148,16 @@ jobs:
           cmake --build obj --config RelWithDebInfo
           cmake --build obj --config RelWithDebInfo --target install/strip
       
+      - name: Compress
+        run: |
+          mkdir -p 7zip
+          wget "https://www.7-zip.org/a/7z2201-linux-x64.tar.xz" -O 7zip/7zip.tar.xz
+          tar -xvf 7zip/7zip.tar.xz -C 7zip/ && mv 7zip/7zz .
+          rm -rf 7zip && chmod +x 7zz
+          ./7zz a -m0=lzma2 -mx9 transmission-dev-build.7z pfx
+      
       - name: Release
         uses: actions/upload-artifact@v3
         with:
-          name: transmission-dev-build
-          path: pfx
+          name: transmission-dev-build.7z
+          path: transmission-dev-build.7z
