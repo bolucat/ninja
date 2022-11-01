@@ -63,6 +63,8 @@ jobs:
 
       - name: Build Geph
         run: |
+          cd geph
+          ls src/china/
           PATH=$PATH:/c/Users/runneradmin/.cargo/bin CARGO_NET_GIT_FETCH_WITH_CLI=true cargo build --release
           ls
         shell: bash
