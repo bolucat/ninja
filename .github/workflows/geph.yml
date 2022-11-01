@@ -25,8 +25,14 @@ jobs:
           ls
         shell: bash
         
+      - name: Compress
+        run: |
+          mv geph\target\release\geph4-client.exe .
+          7z a -m0=lzma2 -mx9 geph4-client.7z geph4-client.exe
+        shell: powershell
+        
       - name: Release
         uses: actions/upload-artifact@v3
         with:
-          name: geph-dev-build
-          path: geph/target/release/geph4-client.exe
+          name: geph4-client.7z
+          path: geph4-client.7z
