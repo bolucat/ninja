@@ -2,6 +2,8 @@ on:
   push:
     paths:
       - '.github/workflows/transmission.yml'
+  schedule:
+    - cron: "0 18 */1 * *"
 
 name: transmission
 jobs:
