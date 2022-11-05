@@ -48,7 +48,7 @@ jobs:
           ./rustup-init -y --default-toolchain "stable-i686-pc-windows-msvc" --profile minimal
           git clone https://github.com/geph-official/geph4-client geph
           cd geph
-          git checkout 40988301cfb60dcedde62fe171defec2c9811061
+          git checkout b113980d58f73ff4676568ad81c8273cafac3337
           rm -rfv src/china/china-domains.txt
           rm -rfv src/china/china-ips.txt
         shell: bash
