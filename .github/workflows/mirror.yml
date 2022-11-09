@@ -1,7 +1,7 @@
 on:
   push:
     paths:
-      - '.github/workflows/mkvtoolnix.yml'
+      - '.github/workflows/mirror.yml'
   schedule:
     - cron: "0 18 */1 * *"
 
@@ -32,28 +32,28 @@ jobs:
           git push --mirror "https://bolucat:${{ secrets.TOKEN }}@github.com/bolucat/MKVToolNix.git"
           cd .. && rm -rf mkvtoolnix.git
           
-  pypy:
-    runs-on: ubuntu-20.04
-    env:
-      TZ: Europe/Busingen
-    steps:
+#   pypy:
+#     runs-on: ubuntu-20.04
+#     env:
+#       TZ: Europe/Busingen
+#     steps:
       
-      - name: Checkout
-        uses: actions/checkout@v3
+#       - name: Checkout
+#         uses: actions/checkout@v3
 
-      - name: Login into Github && Mirror
-        run: |
-          wget -qO- https://api.github.com/repos/cli/cli/releases/latest | jq ".assets[] | {browser_download_url}" -c | jq .browser_download_url -r | grep "linux_amd64.tar.gz" | wget -i -
-          mkdir -p gh && tar -zxf gh_*.tar.gz -C gh/ --strip-components=1
-          mv gh/bin/gh github && rm -rf gh*
-          git config --global user.email "${{ secrets.EMAIL }}"
-          git config --global user.name "bolucat"
-          echo ${{ secrets.TOKEN }} > token.txt
-          chmod +x github && ./github auth login -p https --hostname "github.com" --with-token < token.txt
-          rm -rf token.txt && ./github auth status
-          git clone --recurse-submodules --bare https://foss.heptapod.net/pypy/pypy.git
-          cd pypy.git
-          git remote set-url origin "https://bolucat:${{ secrets.TOKEN }}@github.com/bolucat/pypy.git"
-          git push --mirror "https://bolucat:${{ secrets.TOKEN }}@github.com/bolucat/pypy.git"
-          cd .. && rm -rf pypy.git
+#       - name: Login into Github && Mirror
+#         run: |
+#           wget -qO- https://api.github.com/repos/cli/cli/releases/latest | jq ".assets[] | {browser_download_url}" -c | jq .browser_download_url -r | grep "linux_amd64.tar.gz" | wget -i -
+#           mkdir -p gh && tar -zxf gh_*.tar.gz -C gh/ --strip-components=1
+#           mv gh/bin/gh github && rm -rf gh*
+#           git config --global user.email "${{ secrets.EMAIL }}"
+#           git config --global user.name "bolucat"
+#           echo ${{ secrets.TOKEN }} > token.txt
+#           chmod +x github && ./github auth login -p https --hostname "github.com" --with-token < token.txt
+#           rm -rf token.txt && ./github auth status
+#           git clone --recurse-submodules --bare https://foss.heptapod.net/pypy/pypy.git
+#           cd pypy.git
+#           git remote set-url origin "https://bolucat:${{ secrets.TOKEN }}@github.com/bolucat/pypy.git"
+#           git push --mirror "https://bolucat:${{ secrets.TOKEN }}@github.com/bolucat/pypy.git"
+#           cd .. && rm -rf pypy.git
           
