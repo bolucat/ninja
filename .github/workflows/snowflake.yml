@@ -15,6 +15,7 @@ jobs:
       - name: Set Env
         run: |
           echo "GOLANG=$(wget -qO- https://raw.githubusercontent.com/actions/go-versions/main/versions-manifest.json | grep 'version' | cut -d\" -f4 | head -1)" >> $GITHUB_ENV
+          echo "VERSION=$(date +%Y_%m_%d_%H_%M)" >> $GITHUB_ENV
         shell: bash
 
       - name: Install Golang
@@ -24,14 +25,20 @@ jobs:
 
       - name: Start build
         run: |
-          echo "Version : $(date +%Y_%m_%d_%H_%M)"
+          echo "Version is : ${{ env.VERSION }}"
           git clone https://git.torproject.org/pluggable-transports/snowflake snowflake
           pushd snowflake || exit 1
+          echo "Building snowflake-linux-amd64"
           env CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o snowflake-linux-amd64 -trimpath -ldflags "-s -w -buildid=" ./proxy
+          echo "Building snowflake-linux-arm64"
           env CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o snowflake-linux-arm64 -trimpath -ldflags "-s -w -buildid=" ./proxy
+          echo "Building snowflake-darwin-amd64"
           env CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -o snowflake-darwin-amd64 -trimpath -ldflags "-s -w -buildid=" ./proxy
+          echo "Building snowflake-darwin-arm64"
           env CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 go build -o snowflake-darwin-arm64 -trimpath -ldflags "-s -w -buildid=" ./proxy
+          echo "Building snowflake-windows-amd64"
           env CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -o snowflake-windows-amd64.exe -trimpath -ldflags "-s -w -buildid=" ./proxy
+          echo "Building snowflake-windows-arm64"
           env CGO_ENABLED=0 GOOS=windows GOARCH=arm64 go build -o snowflake-windows-arm64.exe -trimpath -ldflags "-s -w -buildid=" ./proxy
           popd || exit 1
           mkdir -p release
@@ -43,7 +50,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           name: snowflake-dev-build
-          tag: $(date +%Y_%m_%d_%H_%M)
+          tag: ${{ env.VERSION }}
           draft: false
           prerelease: false
           artifacts: |
