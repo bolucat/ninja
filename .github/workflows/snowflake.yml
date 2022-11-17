@@ -50,7 +50,7 @@ jobs:
           [Service]
           User=root
           NoNewPrivileges=true
-          ExecStart=/usr/local/etc/snowflake/snowflake -log /usr/local/etc/snowflake/snowflake.log
+          ExecStart=/usr/local/etc/snowflake/snowflake -capacity 30 -log /usr/local/etc/snowflake/snowflake.log
           Restart=on-failure
           RestartPreventExitStatus=23
 
