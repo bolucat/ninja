@@ -31,6 +31,19 @@ jobs:
           git remote set-url origin "https://bolucat:${{ secrets.TOKEN }}@github.com/bolucat/MKVToolNix.git"
           git push --mirror "https://bolucat:${{ secrets.TOKEN }}@github.com/bolucat/MKVToolNix.git"
           cd .. && rm -rf mkvtoolnix.git
+          # Update logs
+          echo "Update On $(date)" >> .github/update.log
+          # Git Commit
+          git config --local user.name "github-action[bot]"
+          git config --local user.email "${{ secrets.EMAIL }}"
+          git add .
+          git commit -am "Sync MkvToolNix On $(date)"
+      
+      - name: Push Changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
           
 #   pypy:
 #     runs-on: ubuntu-20.04
