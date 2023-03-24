@@ -32,7 +32,8 @@ jobs:
           git push --mirror "https://bolucat:${{ secrets.TOKEN }}@github.com/bolucat/MKVToolNix.git"
           cd .. && rm -rf mkvtoolnix.git
           # Update logs
-          echo "Update On $(date)" >> .github/update.log
+          rm -rf github
+          echo "Sync MkvToolNix On $(date)" >> .github/update.log
           # Git Commit
           git config --local user.name "github-action[bot]"
           git config --local user.email "${{ secrets.EMAIL }}"
