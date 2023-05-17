@@ -28,6 +28,7 @@ jobs:
       - name: Start build
         run: |
           wget https://raw.githubusercontent.com/bolucat/peace/master/src/build/caddy.sh -O caddy.sh
+          echo "Version : v2.7.0-beta.1 build 2"
           chmod +x caddy.sh && ./caddy.sh
 
       - name: Release
@@ -66,6 +67,7 @@ jobs:
       - name: Start build
         run: |
           wget https://raw.githubusercontent.com/bolucat/peace/master/src/build/caddy-uot.sh -O caddy-uot.sh
+          echo "Version : v2.7.0-beta.1 build 2"
           chmod +x caddy-uot.sh && ./caddy-uot.sh
 
       - name: Release
