@@ -57,8 +57,7 @@ jobs:
           rm -rf SagerNet/release.keystore && cp -r release.keystore SagerNet
           rm -rf SagerNet/sager.properties && cp -r sager.properties SagerNet
           pushd SagerNet || exit 1
-          git config --global user.email "${{ secrets.EMAIL }}"
-          git config --global user.name "bolucat"
+          git remote add origin "https://bolucat:${{ secrets.TOKEN }}@github.com/bolucat/SagerNet.git"
           git add .
           git commit -am "update naive to v${NAIVE_VERSION_NAME}"
           git push -u origin dev
