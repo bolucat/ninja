@@ -58,6 +58,7 @@ jobs:
           rm -rf SagerNet/sager.properties && cp -r sager.properties SagerNet
           pushd SagerNet || exit 1
           git remote add origin "https://bolucat:${{ secrets.TOKEN }}@github.com/bolucat/SagerNet.git"
+          git remote set-url origin "https://bolucat:${{ secrets.TOKEN }}@github.com/bolucat/SagerNet.git"
           git add .
           git commit -am "update naive to v${NAIVE_VERSION_NAME}"
           git push -u origin dev
