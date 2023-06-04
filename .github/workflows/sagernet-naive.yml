@@ -56,10 +56,16 @@ jobs:
           rm -rf SagerNet/release.keystore && cp -r release.keystore SagerNet
           rm -rf SagerNet/sager.properties && cp -r sager.properties SagerNet
           pushd SagerNet || exit 1
-          git config --local user.name "github-action[bot]"
-          git config --local user.email "${{ secrets.EMAIL }}"
           git add .
           git commit -am "update naive to v${NAIVE_VERSION_NAME}"
-          git push -u origin dev
+          # git push -u origin dev
           popd || exit 1
-          echo "Naive Plugin has been updated"
+          # echo "Naive Plugin has been updated"
+    
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          repository: bolucat/SagerNet
+          branch: dev
+          directory: SagerNet
