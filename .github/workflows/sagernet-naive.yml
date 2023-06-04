@@ -39,6 +39,7 @@ jobs:
           cp -r sager.properties ../
           # others
           if [ "${GIT_PULL}" = "y" ]; then
+              git remote set-url origin "https://bolucat:${{ secrets.TOKEN }}@github.com/bolucat/SagerNet.git
               git reset --hard ${LAST_COMMIT}
               git push origin HEAD --force
               git pull
