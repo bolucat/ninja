@@ -13,7 +13,12 @@ jobs:
           # domain list
           wget https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/direct-list.txt -O domains.txt
           wget -qO- https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/accelerated-domains.china.conf | sed $'/^#/d' | cut -d\/ -f2 >> domains.txt
-          echo "itab.link" >> domains.txt
+          cat >> domains.txt <<EOF
+          itab.link
+          hitokoto.cn
+          codelife.cc
+          eastmoney.com
+          EOF
           cat domains.txt | sort | uniq > china-domains.txt
           rm -rf domains.txt
           DOMAIN_LINES=$(wc -l china-domains.txt | cut -d ' ' -f1)
