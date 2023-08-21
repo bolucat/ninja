@@ -19,6 +19,7 @@ jobs:
           codelife.cc
           eastmoney.com
           ourl.co
+          iguokao.com
           EOF
           cat domains.txt | sort | uniq > china-domains.txt
           rm -rf domains.txt
