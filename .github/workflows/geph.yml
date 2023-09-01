@@ -20,6 +20,7 @@ jobs:
           eastmoney.com
           ourl.co
           iguokao.com
+          baidu.com
           EOF
           cat domains.txt | sort | uniq > china-domains.txt
           rm -rf domains.txt
