@@ -1,7 +1,7 @@
 on:
   push:
-    branches:
-      - main
+    paths:
+      - '.github/workflows/snowflake.yml'
 
 name: snowflake
 jobs:
