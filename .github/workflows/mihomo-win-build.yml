@@ -32,9 +32,7 @@ jobs:
           BUILDTIME=$(date -u)
           LDFLAGS="-X 'github.com/metacubex/mihomo/constant.Version=${VERSION}' -X 'github.com/metacubex/mihomo/constant.BuildTime=${BUILDTIME}' -w -s -buildid="
           sed 's/mihomo/clash/g' -i constant/path.go
-          GOARCH=amd64 GOOS=windows GOAMD64=v3 CGO_ENABLED=0 go build -tags with_gvisor -trimpath \
-          -ldflags ${LDFLAGS} \
-          -o clash-win64.exe
+          GOARCH=amd64 GOOS=windows GOAMD64=v3 CGO_ENABLED=0 go build -tags with_gvisor -trimpath -ldflags ${LDFLAGS} -o clash-win64.exe
           popd || exit 1
           mkdir -p release
           mv mihomo/clash-win64.exe release
