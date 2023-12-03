@@ -24,9 +24,6 @@ jobs:
           go-version: ${{ env.GOLANG }}
 
       - name: Start build
-        env:
-          NAME: clash
-          BINDIR: bin
         run: |
           git clone -b Alpha https://github.com/MetaCubeX/mihomo mihomo
           pushd mihomo || exit 1
@@ -35,7 +32,7 @@ jobs:
           make -j$(($(nproc) + 1)) windows-amd64
           popd || exit 1
           mkdir -p release
-          mv mihomo/bin/clash-*.exe release/clash-win64.exe
+          mv mihomo/bin/mihomo-*.exe release/clash-win64.exe
 
       - name: Release
         uses: ncipollo/release-action@v1
