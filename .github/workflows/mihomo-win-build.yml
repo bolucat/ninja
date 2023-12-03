@@ -1,0 +1,52 @@
+on:
+  push:
+    paths:
+      - '.github/workflows/mihomo-win-build.yml'
+
+name: mihomo-windows-amd64
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup variables
+        run: |
+          echo "GOLANG=$(wget -qO- https://raw.githubusercontent.com/actions/go-versions/main/versions-manifest.json | grep 'version' | cut -d\" -f4 | head -1)" >> $GITHUB_ENV
+          echo "MIHOMO_VERSION=v1.17.0" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Install Golang
+        uses: actions/setup-go@v4
+        with: 
+          go-version: ${{ env.GOLANG }}
+
+      - name: Start build
+        run: |
+          git clone -b Alpha https://github.com/MetaCubeX/mihomo mihomo
+          pushd mihomo || exit 1
+          git checkout ${MIHOMO_VERSION}
+          VERSION=alpha-$(git rev-parse --short HEAD)
+          BUILDTIME=$(date -u)
+          sed 's/mihomo/clash/g' -i constant/path.go
+          GOARCH=amd64 GOOS=windows GOAMD64=v3 CGO_ENABLED=0 go build -tags with_gvisor -trimpath \
+          -ldflags '-X "github.com/metacubex/mihomo/constant.Version=${VERSION}" -X "github.com/metacubex/mihomo/constant.BuildTime=${BUILDTIME}" -w -s -buildid=' \
+          -o clash-${MIHOMO_VERSION}.exe
+          popd || exit 1
+          mkdir -p release
+          mv mihomo/clash-*.exe release
+
+      - name: Release
+        uses: ncipollo/release-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          name: ${{ env.MIHOMO_VERSION }}
+          tag: ${{ env.MIHOMO_VERSION }}
+          draft: false
+          prerelease: false
+          allowUpdates: true
+          artifacts: |
+            ./release/*
