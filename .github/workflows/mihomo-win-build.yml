@@ -30,12 +30,10 @@ jobs:
           git checkout ${MIHOMO_VERSION}
           VERSION=alpha-$(git rev-parse --short HEAD)
           BUILDTIME=$(date -u)
-          VAR_SETTING=""
-          VAR_SETTING="${VAR_SETTING} -X github.com/metacubex/mihomo/constant.Version=${VERSION}"
-          VAR_SETTING="${VAR_SETTING} -X github.com/metacubex/mihomo/constant.BuildTime=${BUILDTIME}"
+          LDFLAGS="-X 'github.com/metacubex/mihomo/constant.Version=${VERSION}' -X 'github.com/metacubex/mihomo/constant.BuildTime=${BUILDTIME}' -w -s -buildid="
           sed 's/mihomo/clash/g' -i constant/path.go
           GOARCH=amd64 GOOS=windows GOAMD64=v3 CGO_ENABLED=0 go build -tags with_gvisor -trimpath \
-          -ldflags "${VAR_SETTING} -s -w -buildid=" \
+          -ldflags ${LDFLAGS} \
           -o clash-win64.exe
           popd || exit 1
           mkdir -p release
