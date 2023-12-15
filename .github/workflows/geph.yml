@@ -12,6 +12,7 @@ jobs:
         run: |
           # domain list
           wget https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/direct-list.txt -O domains.txt
+          wget -qO- https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/china-list.txt >> domains.txt
           wget -qO- https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/accelerated-domains.china.conf | sed $'/^#/d' | cut -d\/ -f2 >> domains.txt
           cat >> domains.txt <<EOF
           itab.link
@@ -57,7 +58,7 @@ jobs:
           ./rustup-init -y --default-toolchain "stable-i686-pc-windows-msvc" --profile minimal
           git clone https://github.com/geph-official/geph4-client geph
           cd geph
-          git checkout 403efdf21e186b1d3de339596c288e7fa31ebb77
+          git checkout b7dd2d8c7695cb73420b78ebfea427dbc9bf1a4b
           rm -rfv src/china/china-domains.txt
           rm -rfv src/china/china-ips.txt
         shell: bash
