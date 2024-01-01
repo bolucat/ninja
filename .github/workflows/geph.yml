@@ -25,12 +25,14 @@ jobs:
           EOF
           cat domains.txt | sort | uniq > china-domains.txt
           rm -rf domains.txt
+          # delete some domains which should proxy with tunnel
+          sed -i $"/cnbeta\.com\.tw/d" china-domains.txt
           DOMAIN_LINES=$(wc -l china-domains.txt | cut -d ' ' -f1)
           echo "china-domains.txt has ${DOMAIN_LINES} lines"
           # ip list
           wget https://raw.githubusercontent.com/17mon/china_ip_list/master/china_ip_list.txt -O china-ips.txt
           IP_LINES=$(wc -l china-ips.txt | cut -d ' ' -f1)
-          echo "china-domains.txt has ${IP_LINES} lines"
+          echo "china-ips.txt has ${IP_LINES} lines"
       
       - uses: actions/upload-artifact@v3
         with:
