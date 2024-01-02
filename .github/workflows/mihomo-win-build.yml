@@ -15,7 +15,7 @@ jobs:
       - name: Setup variables
         run: |
           echo "GOLANG=$(wget -qO- https://raw.githubusercontent.com/actions/go-versions/main/versions-manifest.json | grep 'version' | cut -d\" -f4 | head -1)" >> $GITHUB_ENV
-          echo "MIHOMO_VERSION=v1.17.0" >> $GITHUB_ENV
+          echo "MIHOMO_VERSION=v1.18.0" >> $GITHUB_ENV
         shell: bash
 
       - name: Install Golang
