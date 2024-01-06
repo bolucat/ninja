@@ -32,7 +32,7 @@ jobs:
           git clone https://github.com/FastForwardTeam/FastForward FastForward
           pushd FastForward || exit 1
           npm ci
-          sed 's/addon@fastforward.team/5477545c-34e8-463e-b76d-8fba89c5e4b1/g' -i platform_spec/firefox/manifest.json
+          sed 's/addon@fastforward.team/fastforward_dev_build01@neuq.de/g' -i platform_spec/firefox/manifest.json
           node ./scripts/build.js firefox nover
           mv build/dist/*.zip ../FastForward_firefox.zip
           popd || exit 1
