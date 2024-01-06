@@ -1,0 +1,57 @@
+on:
+  push:
+    paths:
+      - '.github/workflows/forward_firefox_sign.yml'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release Tag'
+        required: false
+  schedule:
+    - cron: "0 18 */2 * *"
+
+name: FastForward Firefox Extension Sign
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+    runs-on: ubuntu-22.04
+    steps:
+      
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'latest'
+          check-latest: true
+
+      - name: Start build
+        run: |
+          git clone https://github.com/FastForwardTeam/FastForward FastForward
+          pushd FastForward || exit 1
+          npm ci
+          sed 's/addon@fastforward.team/5477545c-34e8-463e-b76d-8fba89c5e4b1/g' -i platform_spec/firefox/manifest.json
+          node ./scripts/build.js firefox nover
+          mv build\dist\*.zip ../FastForward_firefox.zip
+          popd || exit 1
+          unzip -d FastForward_firefox FastForward_firefox.zip && rm -rf FastForward_firefox.zip
+          mkdir -p release
+          pushd FastForward_firefox || exit 1
+          npm install --global web-ext
+          web-ext sign --use-submission-api --api-key "${{ secrets.AMO_API_KEY }}" --api-secret "${{ secrets.AMO_API_SECRET }}" --channel unlisted
+          mv web-ext*\* ../release
+          popd || exit 1
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          name: FastForward Firefox Extension Publish
+          tag_name: $(date +%Y%m%d%H%M)
+          draft: false
+          prerelease: false
+          files: |
+            ./release/*
