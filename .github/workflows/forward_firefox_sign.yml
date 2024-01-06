@@ -26,6 +26,12 @@ jobs:
         with:
           node-version: 'latest'
           check-latest: true
+      
+      - name: Setup variables
+        run: |
+          VERSION=$(date +%Y%m%d%H%M)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+        shell: bash
 
       - name: Start build
         run: |
@@ -45,13 +51,14 @@ jobs:
           popd || exit 1
 
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: ncipollo/release-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: FastForward Firefox Extension Publish
-          tag_name: $(date +%Y%m%d%H%M)
+          name: FastForward Firefox
+          tag: ${{ env.VERSION }}
           draft: false
           prerelease: false
-          files: |
+          allowUpdates: true
+          artifacts: |
             ./release/*
