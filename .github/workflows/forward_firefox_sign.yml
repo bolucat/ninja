@@ -41,7 +41,7 @@ jobs:
           pushd FastForward_firefox || exit 1
           npm install --global web-ext
           web-ext sign --use-submission-api --api-key "${{ secrets.AMO_API_KEY }}" --api-secret "${{ secrets.AMO_API_SECRET }}" --channel unlisted
-          mv web-ext*\* ../release
+          mv web-ext*/* ../release
           popd || exit 1
 
       - name: Release
