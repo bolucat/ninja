@@ -10,7 +10,7 @@ on:
 
 name: Sagernet Naive Plugin Update
 jobs:
-  mkvtoolnix:
+  naive-update:
     runs-on: ubuntu-22.04
     steps:
       
@@ -41,5 +41,5 @@ jobs:
           sed "s/${ORIGIN_NAIVE_VERSION}/${NEW_NAIVE_VERSION}/g" -i sager.properties
           git add .
           git commit -am "update naive core to v${NEW_NAIVE_VERSION_NAME}"
-          git push -u origin dev "https://bolucat:${{ secrets.TOKEN }}@github.com/bolucat/SagerNet"
+          git push -u origin dev
           popd || exit 1
