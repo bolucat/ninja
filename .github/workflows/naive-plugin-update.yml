@@ -39,6 +39,7 @@ jobs:
           NEW_NAIVE_VERSION=$((${ORIGIN_NAIVE_VERSION}+1))
           sed "s/${ORIGIN_NAIVE_VERSION_NAME}/${NEW_NAIVE_VERSION_NAME}/g" -i sager.properties
           sed "s/${ORIGIN_NAIVE_VERSION}/${NEW_NAIVE_VERSION}/g" -i sager.properties
+          git remote set-url origin "https://bolucat:${{ secrets.TOKEN }}@github.com/bolucat/SagerNet.git"
           git add .
           git commit -am "update naive core to v${NEW_NAIVE_VERSION_NAME}"
           git push -u origin dev
