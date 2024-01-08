@@ -8,7 +8,7 @@ on:
         description: 'Naive Version Name'
         required: true
 
-name: Mirror Sync
+name: Sagernet Naive Plugin Update
 jobs:
   mkvtoolnix:
     runs-on: ubuntu-22.04
