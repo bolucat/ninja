@@ -1,0 +1,51 @@
+on:
+  push:
+    paths:
+      - '.github/workflows/yuzu.yml'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release Tag'
+        required: false
+
+name: yuzu
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      TZ: Europe/Busingen
+    steps:
+      
+      - name: Checkout
+        uses: actions/checkout@4
+
+      - name: Set Variables
+        run: |
+          echo "TAG=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
+
+      - name: backup
+        run: |
+          export GCRS="git clone --depth 1 --recurse-submodules"
+          ${GCRS} https://github.com/yuzu-emu/yuzu yuzu
+          ${GCRS} https://github.com/yuzu-emu/yuzu-mainline yuzu-mainline
+          ${GCRS} https://github.com/yuzu-emu/yuzu-android yuzu-android
+          # yuzu-mainline
+          mkdir -p yuzu-mainline/Clients
+          pushd yuzu-mainline/Clients || exit 1
+          wget -qO- https://api.github.com/repos/yuzu-emu/yuzu-mainline/releases/latest | jq ".assets[] | {browser_download_url}" -c | jq .browser_download_url -r | aria2c -c -x 8 -s 8 -j 1 -k 1M -i -
+          popd || exit 1
+          # yuzu-android
+          mkdir -p yuzu-android/Clients
+          pushd yuzu-android/Clients || exit 1
+          wget -qO- https://api.github.com/repos/yuzu-emu/yuzu-android/releases/latest | jq ".assets[] | {browser_download_url}" -c | jq .browser_download_url -r | aria2c -c -x 8 -s 8 -j 1 -k 1M -i -
+          popd || exit 1
+
+      - name: Release
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.TAGS }}
+          path: |
+            yuzu
+            yuzu-mainline
+            yuzu-android
+          compression-level: 9
