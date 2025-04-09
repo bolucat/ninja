@@ -13,13 +13,13 @@ on:
 name: Mirror Sync
 jobs:
   mkvtoolnix:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     env:
       TZ: Europe/Busingen
     steps:
       
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Login into Github && Mirror
         run: |
