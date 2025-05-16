@@ -31,7 +31,7 @@ jobs:
           echo ${{ secrets.TOKEN }} > token.txt
           chmod +x github && ./github auth login -p https --hostname "github.com" --with-token < token.txt
           rm -rf token.txt && ./github auth status
-          git clone --recurse-submodules --bare https://gitlab.com/mbunkus/mkvtoolnix.git
+          git clone --recurse-submodules --bare https://codeberg.org/mbunkus/mkvtoolnix.git
           cd mkvtoolnix.git
           git remote set-url origin "https://bolucat:${{ secrets.TOKEN }}@github.com/bolucat/MKVToolNix.git"
           git push --mirror "https://bolucat:${{ secrets.TOKEN }}@github.com/bolucat/MKVToolNix.git"
