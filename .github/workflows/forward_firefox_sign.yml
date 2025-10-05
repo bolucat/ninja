@@ -7,8 +7,8 @@ on:
       tag:
         description: 'Release Tag'
         required: false
-  schedule:
-    - cron: "0 18 */7 * *"
+  # schedule:
+  #   - cron: "0 18 */7 * *"
 
 name: FastForward Firefox Extension Sign
 jobs:
