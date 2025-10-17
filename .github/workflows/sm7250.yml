@@ -30,7 +30,8 @@ jobs:
           git clone --progress https://github.com/EndCredits/kernel_xiaomi_sm7250 sm7250
           cd sm7250
           chmod +x build.sh
-          LTO=thin BUILD_CONFIG=build.config.gki.aarch64 build.sh
+          ls
+          LTO=thin BUILD_CONFIG=build.config.gki.aarch64 ./build.sh
           ls
           curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
           ls
