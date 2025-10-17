@@ -1,0 +1,39 @@
+on:
+  push:
+    paths:
+      - '.github/workflows/sm7250.yml'
+    workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release Date'
+        required: false
+
+name: KernalSU latest build for SM7250
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+    runs-on: ubuntu-22.04
+    steps:
+      
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Start build
+        run: |
+          git clone https://github.com/EndCredits/kernel_xiaomi_sm7250 sm7250
+          cd sm7250
+          chmod +x build.sh
+          LTO=thin BUILD_CONFIG=build.config.gki.aarch64 build.sh
+          ls
+          curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
+          ls
+          mv out/arch/arm64/boot/Image.gz-dtb ../Image.gz-dtb
+
+      - name: Release
+        uses: actions/upload-artifact@v4
+        with:
+          name: $(date +'%Y%m%d')-KernalSU-SM7250
+          path: |
+            ./Image.gz-dtb
+          compression-level: 9
